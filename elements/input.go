@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/buger/goterm"
 )
@@ -16,6 +17,7 @@ import (
 type Input struct {
 	Label        string
 	DefaultValue string
+	MultiLine    bool
 }
 
 // Run :
@@ -32,11 +34,30 @@ func (i *Input) Run() (value string, canceled bool) {
 
 	fmt.Printf("%s\n%s ",
 		goterm.Color(goterm.Bold(":"), goterm.GREEN),
-		goterm.Color("\u276F ", goterm.CYAN),
+		goterm.Color("\u276F", goterm.CYAN),
 	)
 
 	reader := bufio.NewReader(os.Stdin)
-	value, _ = reader.ReadString('\n')
+
+	if i.MultiLine {
+		var lines []string
+
+		for {
+			line, _ := reader.ReadString('\n')
+			if line == "\n" {
+				fmt.Print("\033[1A \033[1A\n")
+				break
+			}
+
+			fmt.Print(goterm.Color("\u276F ", goterm.CYAN))
+
+			lines = append(lines, line[:len(line)-1])
+		}
+
+		value = strings.Join(lines, "\n")
+	} else {
+		value, _ = reader.ReadString('\n')
+	}
 
 	if value[len(value)-1] == '\n' {
 		value = value[:len(value)-1]

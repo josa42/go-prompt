@@ -4,11 +4,11 @@
 
 Interactive terminal inputs.
 
-![](screenshot.png)
-
 ## Elements
 
 ### Select
+
+![](docs/screenshot-select.jpg)
 
 ```
 selection1, _ := prompt.Select("Choose one option", prompt.Options{
@@ -19,7 +19,9 @@ selection1, _ := prompt.Select("Choose one option", prompt.Options{
 fmt.Println("Selection:", selection1)
 ```
 
-### Select
+### MultiSelect
+
+![](docs/screnshot-multi-select.jpg)
 
 ```
 selection, _ := prompt.MultiSelect("Choose multiple options", prompt.Options{
@@ -30,19 +32,33 @@ selection, _ := prompt.MultiSelect("Choose multiple options", prompt.Options{
 fmt.Println("Selection:", selection)
 ```
 
-### Input
+### Confirm
+
+![](docs/screenshot-confirm.jpg)
+
+```
+selection, _ := prompt.Confirm("Do you want to go on?")
+fmt.Println("Selection:", selection)
+```
+
+### Text Input
+
+![](docs/screenshot-text.jpg)
 
 ```
 selection, _ := prompt.Input("Write single line text", "")
 fmt.Println("Selection:", selection)
 ```
 
-### Confirm
+### Multi Line Text Input
+
+![](docs/screenshot-multi-select.jpg)
 
 ```
-selection, _ := prompt.Confirm("Do you want to go on?")
+selection, _ := prompt.MultiLineText("Write multiple line text", "")
 fmt.Println("Selection:", selection)
 ```
+
 
 ## Prior Art
 

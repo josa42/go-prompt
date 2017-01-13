@@ -25,13 +25,18 @@ func main() {
 	fmt.Println("Selection:", selection2)
 	fmt.Println()
 
-	selection3, _ := prompt.Input("Write single line text", "")
+	selection3, _ := prompt.Confirm("Do you want to go on?")
 	fmt.Println()
 	fmt.Println("Selection:", selection3)
 	fmt.Println()
 
-	selection4, _ := prompt.Confirm("Do you want to go on?")
+	selection4, _ := prompt.Text("Write single line text", "")
 	fmt.Println()
 	fmt.Println("Selection:", selection4)
+	fmt.Println()
+
+	selection5, _ := prompt.MultiLineText("Write multiple line text", "")
+	fmt.Println()
+	fmt.Println("Selection:\n" + selection5)
 	fmt.Println()
 }
