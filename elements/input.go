@@ -23,13 +23,17 @@ func (i *Input) Run() (value string, canceled bool) {
 	fmt.Printf("%s", goterm.Color(goterm.Bold(i.Label), goterm.GREEN))
 
 	if i.DefaultValue != "" {
-		fmt.Printf(" %s%s%s",
+		fmt.Printf(" %s%s%s ",
 			goterm.Color(goterm.Bold("["), goterm.GREEN),
 			goterm.Color(i.DefaultValue, goterm.YELLOW),
-			goterm.Color(goterm.Bold("]"), goterm.GREEN))
+			goterm.Color(goterm.Bold("]"), goterm.GREEN),
+		)
 	}
 
-	fmt.Printf("%s ", goterm.Color(goterm.Bold(":"), goterm.GREEN))
+	fmt.Printf("%s\n%s ",
+		goterm.Color(goterm.Bold(":"), goterm.GREEN),
+		goterm.Color("\u276F ", goterm.CYAN),
+	)
 
 	reader := bufio.NewReader(os.Stdin)
 	value, _ = reader.ReadString('\n')
