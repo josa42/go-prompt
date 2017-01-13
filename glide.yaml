@@ -1,3 +1,8 @@
 package: github.com/josa42/go-prompt
+homepage: https://github.com/josa42/go-prompt
+license: MIT
+owners:
+- name: Josa Gesell
+  email: josa@gesell.me
 import:
 - package: github.com/buger/goterm

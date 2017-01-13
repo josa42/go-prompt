@@ -63,3 +63,7 @@ fmt.Println("Selection:", selection)
 ## Prior Art
 
 - [paulrademacher/climenu](https://github.com/paulrademacher/climenu)
+
+## License
+
+MIT (See [license.md](license.md))
