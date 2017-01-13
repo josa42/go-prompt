@@ -21,7 +21,7 @@ fmt.Println("Selection:", selection1)
 
 ### MultiSelect
 
-![](docs/screnshot-multi-select.jpg)
+![](docs/screenshot-multi-select.jpg)
 
 ```
 selection, _ := prompt.MultiSelect("Choose multiple options", prompt.Options{
@@ -52,7 +52,7 @@ fmt.Println("Selection:", selection)
 
 ### Multi Line Text Input
 
-![](docs/screenshot-multi-select.jpg)
+![](docs/screenshot-multi-line-text.jpg)
 
 ```
 selection, _ := prompt.MultiLineText("Write multiple line text", "")
