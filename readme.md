@@ -1,7 +1,5 @@
 # Go Prompt
 
-**Work in progress**
-
 Interactive terminal inputs.
 
 ## Elements
@@ -12,9 +10,9 @@ Interactive terminal inputs.
 
 ```Go
 selection1, _ := prompt.Select("Choose one option", prompt.Options{
-	"1": "One",
-	"2": "Two",
-	"3": "Three",
+	{"1", "One"},
+	{"2", "Two"},
+	{"3", "Three"},
 })
 fmt.Println("Selection:", selection1)
 ```
@@ -25,9 +23,9 @@ fmt.Println("Selection:", selection1)
 
 ```Go
 selection, _ := prompt.MultiSelect("Choose multiple options", prompt.Options{
-	"1": "One",
-	"2": "Two",
-	"3": "Three",
+	{"1", "One"},
+	{"2", "Two"},
+	{"3", "Three"},
 })
 fmt.Println("Selection:", selection)
 ```

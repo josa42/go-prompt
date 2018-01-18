@@ -8,18 +8,18 @@ import (
 
 func main() {
 	selection1, _ := prompt.Select("Choose one option", prompt.Options{
-		"1": "One",
-		"2": "Two",
-		"3": "Three",
+		{"1", "One"},
+		{"2", "Two"},
+		{"3", "Three"},
 	})
 	fmt.Println()
 	fmt.Println("Selection:", selection1)
 	fmt.Println()
 
 	selection2, _ := prompt.MultiSelect("Choose multiple options", prompt.Options{
-		"1": "One",
-		"2": "Two",
-		"3": "Three",
+		{"1", "One"},
+		{"2", "Two"},
+		{"3", "Three"},
 	})
 	fmt.Println()
 	fmt.Println("Selection:", selection2)

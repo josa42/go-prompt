@@ -10,8 +10,8 @@ func Select(label string, options Options) (selection string, canceled bool) {
 		Multi: false,
 	}
 
-	for value, label := range options {
-		menu.AddOption(value, label)
+	for _, option := range options {
+		menu.AddOption(option[0], option[1])
 	}
 
 	var selections []string

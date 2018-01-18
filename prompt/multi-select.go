@@ -10,8 +10,8 @@ func MultiSelect(label string, options Options) (selection []string, canceled bo
 		Multi: true,
 	}
 
-	for value, label := range options {
-		menu.AddOption(value, label)
+	for _, option := range options {
+		menu.AddOption(option[0], option[0])
 	}
 
 	selection, canceled = menu.Run()
