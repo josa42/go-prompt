@@ -6,7 +6,7 @@ import "github.com/josa42/go-prompt/elements"
 func Select(label string, options Options) (selection string, canceled bool) {
 
 	menu := elements.Select{
-		Label: "Select options",
+		Label: label,
 		Multi: false,
 	}
 
