@@ -3,6 +3,7 @@ package elements
 import (
 	"fmt"
 	"os"
+	"os/signal"
 
 	"github.com/buger/goterm"
 	"github.com/josa42/go-prompt/input"
@@ -12,8 +13,10 @@ import (
 type Select struct {
 	Multi          bool
 	Label          string
+	MaxVisible     int
 	cursorPosition int
 	options        []option
+	visibleIndex   int
 }
 
 type option struct {
@@ -94,6 +97,13 @@ func (m *Select) Run() (results []string, canceled bool) {
 	}
 }
 
+func (m *Select) maxLen() int {
+	if m.MaxVisible != 0 {
+		return m.MaxVisible
+	}
+	return len(m.options)
+}
+
 func (m *Select) selectedKeys() (selections []string) {
 	if m.Multi {
 		for _, option := range m.options {
@@ -112,6 +122,13 @@ func (m *Select) selectedKeys() (selections []string) {
 func (m *Select) setCursorPosition(position int) {
 	length := len(m.options)
 	m.cursorPosition = (position + length) % length
+
+	if m.cursorPosition < m.visibleIndex {
+		m.visibleIndex = m.cursorPosition
+	}
+	if m.cursorPosition >= m.visibleIndex+m.maxLen() {
+		m.visibleIndex = (m.cursorPosition - m.maxLen() + 1)
+	}
 }
 
 func (m *Select) moveCursor(diff int) {
@@ -137,8 +154,16 @@ func (m *Select) hideCursor() {
 	fmt.Printf("\033[?25l")
 }
 
+func (m *Select) drawnOptionCount() int {
+	c := len(m.options)
+	if c > m.maxLen() {
+		c = m.maxLen()
+	}
+	return c
+}
+
 func (m *Select) resetCursor() {
-	fmt.Printf("\033[%dA", len(m.options)-1)
+	fmt.Printf("\033[%dA", m.drawnOptionCount()-1)
 }
 
 func (m *Select) redrawOptions() {
@@ -153,6 +178,13 @@ func (m *Select) drawLabel() {
 func (m *Select) drawOptions() {
 
 	for index, option := range m.options {
+
+		if index < m.visibleIndex || index >= (m.visibleIndex+m.maxLen()) {
+			continue
+		}
+
+		// :Erase line
+		fmt.Printf("\033[2K")
 
 		prefix := ""
 		if m.Multi {
@@ -174,7 +206,7 @@ func (m *Select) drawOptions() {
 			fmt.Printf("\r%s%s%s", "  ", prefix, option.label)
 		}
 
-		if index != len(m.options)-1 {
+		if index < m.visibleIndex+m.drawnOptionCount()-1 {
 			fmt.Println()
 		}
 	}

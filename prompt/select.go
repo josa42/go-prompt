@@ -6,8 +6,9 @@ import "github.com/josa42/go-prompt/elements"
 func Select(label string, options Options) (selection string, canceled bool) {
 
 	menu := elements.Select{
-		Label: label,
-		Multi: false,
+		Label:      label,
+		Multi:      false,
+		MaxVisible: 5, // TODO make this configurable
 	}
 
 	for _, option := range options {
