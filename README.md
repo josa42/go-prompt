@@ -64,4 +64,4 @@ fmt.Println("Selection:\n" + selection)
 
 ## License
 
-MIT (See [license.md](license.md))
+[MIT © Josa Gesell](LICENSE)

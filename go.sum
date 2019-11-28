@@ -1,0 +1,4 @@
+github.com/buger/goterm v0.0.0-20161103140809-cc3942e537b1 h1:PxkwCYUT1DqOWYcEiINU8fLhR4vwqMcZ440P33nAZIo=
+github.com/buger/goterm v0.0.0-20161103140809-cc3942e537b1/go.mod h1:u9UyCz2eTrSGy6fbupqJ54eY5c4IC8gREQ1053dK12U=
+github.com/pkg/term v0.0.0-20150802233108-fed4d9ece00e h1:VvtDmZ79XmOKvZPS2euSzXyPRb/Rq1hsRCt9AAAOWoo=
+github.com/pkg/term v0.0.0-20150802233108-fed4d9ece00e/go.mod h1:eCbImbZ95eXtAUIbLAuAVnBnwf83mjf6QIVH8SHYwqQ=
