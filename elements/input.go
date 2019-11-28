@@ -59,7 +59,7 @@ func (i *Input) Run() (value string, canceled bool) {
 		value, _ = reader.ReadString('\n')
 	}
 
-	if value[len(value)-1] == '\n' {
+	if len(value) > 0 && value[len(value)-1] == '\n' {
 		value = value[:len(value)-1]
 	}
 
