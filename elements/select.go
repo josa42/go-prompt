@@ -3,10 +3,18 @@ package elements
 import (
 	"fmt"
 	"os"
-	"os/signal"
 
 	"github.com/buger/goterm"
 	"github.com/josa42/go-prompt/input"
+)
+
+type InputAction int
+
+const (
+	Default InputAction = iota
+	Return
+	Cancel
+	None
 )
 
 // Select :
@@ -14,6 +22,8 @@ type Select struct {
 	Multi          bool
 	Label          string
 	MaxVisible     int
+	InputHandler   func(Select, input.Sequence) InputAction
+	FilterHandler  func(Select, string) bool
 	cursorPosition int
 	options        []option
 	visibleIndex   int
@@ -51,14 +61,22 @@ func (m *Select) Run() (results []string, canceled bool) {
 	for {
 		sequence, err := input.ReadSequence()
 
+		if m.InputHandler != nil {
+			switch m.InputHandler(*m, sequence) {
+			case Return:
+				return m.selectedKeys(), false
+			case Cancel:
+				return m.cancelKeys(), true
+			case None:
+				continue
+			}
+		}
+
 		if sequence.IsEtx() {
 			os.Exit(0)
 
 		} else if sequence.IsEsc() || err != nil {
-			if m.Multi {
-				return []string{}, true
-			}
-			return []string{""}, true
+			return m.cancelKeys(), true
 
 		} else if sequence.IsReturn() {
 			return m.selectedKeys(), false
@@ -93,15 +111,27 @@ func (m *Select) Run() (results []string, canceled bool) {
 					return m.selectedKeys(), false
 				}
 			}
+			// } else if sequence.IsString("y") {
+			// 	m.setCursorPosition(0)
+			// 	m.redrawOptions()
+			// } else if sequence.IsString("n") {
+			// 	m.setCursorPosition(1)
+			// 	m.redrawOptions()
 		}
 	}
 }
 
+func (m *Select) SelectIndex(index int) {
+	m.setCursorPosition(index)
+	m.redrawOptions()
+}
+
 func (m *Select) maxLen() int {
-	if m.MaxVisible != 0 {
+	l := len(m.options)
+	if m.MaxVisible != 0 && m.MaxVisible < l {
 		return m.MaxVisible
 	}
-	return len(m.options)
+	return l
 }
 
 func (m *Select) selectedKeys() (selections []string) {
@@ -117,6 +147,13 @@ func (m *Select) selectedKeys() (selections []string) {
 	}
 
 	return
+}
+
+func (m *Select) cancelKeys() []string {
+	if m.Multi {
+		return []string{}
+	}
+	return []string{""}
 }
 
 func (m *Select) setCursorPosition(position int) {
@@ -177,11 +214,20 @@ func (m *Select) drawLabel() {
 
 func (m *Select) drawOptions() {
 
+	count := 0
+
 	for index, option := range m.options {
 
 		if index < m.visibleIndex || index >= (m.visibleIndex+m.maxLen()) {
 			continue
 		}
+
+		if m.FilterHandler != nil && !m.FilterHandler(*m, option.key) {
+			continue
+		}
+
+		// Actually draw option
+		count = count + 1
 
 		// :Erase line
 		fmt.Printf("\033[2K")
@@ -206,7 +252,7 @@ func (m *Select) drawOptions() {
 			fmt.Printf("\r%s%s%s", "  ", prefix, option.label)
 		}
 
-		if index < m.visibleIndex+m.drawnOptionCount()-1 {
+		if count != m.maxLen() {
 			fmt.Println()
 		}
 	}

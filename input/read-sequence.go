@@ -1,6 +1,8 @@
 package input
 
-import "github.com/pkg/term"
+import (
+	"github.com/pkg/term"
+)
 
 var ascii = map[string]byte{
 	"etx":   3,
@@ -75,6 +77,10 @@ func (s *Sequence) IsSpace() bool {
 	return !s.IsControllSequence() && s.ASCII() == ' '
 }
 
+func (s *Sequence) IsString(str string) bool {
+	return !s.IsControllSequence() && string(s.bytes[0]) == str
+}
+
 // ASCII :
 func (s *Sequence) ASCII() int {
 	return int(s.bytes[0])
@@ -85,8 +91,14 @@ func (s *Sequence) Number() int {
 	if s.IsNumber() {
 		return int(s.bytes[0]) - '1'
 	}
-
 	return -1
+}
+
+func (s *Sequence) String() string {
+	if s.IsControllSequence() {
+		return ""
+	}
+	return string(s.bytes[0])
 }
 
 // ReadSequence :
